@@ -1,9 +1,14 @@
 import React from 'react';
 
 import TodoList from "./components/TodoComponents/TodoList";
-import TodoItems from "./components/TodoComponents/TodoForm";
+import TodoItems from "./components/TodoComponents/TodoItems";
 
-const toDoList = [{ item: 'To Do:'}];
+const toDoList = [
+  
+    // item: 'To Do:',
+    // done: false,
+    // id: 
+];
 
 
 
@@ -16,7 +21,7 @@ class App extends React.Component {
     this.state = {
       itemList: toDoList,
       item: ""
-
+     
     };
   }
 
@@ -31,15 +36,46 @@ class App extends React.Component {
   updateList = event => {
     event.preventDefault();
     const newTodoList = {
-      item: this.state.item
+      item: this.state.item,
+      id: Date.now(),
+      done: false
     }
     
     this.setState({
       itemList: [...this.state.itemList, newTodoList],
-      
+      item: ''
     });
   }
-    
+
+  toggleItem = id => {
+    console.log(id);
+    // console.log('hi there toggle');
+    const selectItem = this.state.itemList.map(dogBanana => {
+      
+      if (dogBanana.id == id) {
+        console.log('hi');
+        // return {
+        //   ...dogBanana,
+        //   // name: item.name,
+        //   // id: item.id,
+        //   // purchased: item.purchased
+        //   done: !dogBanana.done
+        // };
+      // }
+      dogBanana.done = !dogBanana.done;
+      return dogBanana;
+      } else { 
+        return dogBanana;
+      }
+      
+    });
+    console.log(selectItem)
+    this.setState({
+      itemList: selectItem
+    });
+  }
+
+
   render() {
     return (
       <div>
@@ -48,18 +84,26 @@ class App extends React.Component {
         </div>
         <div className="toDoList-wrapper">
           {this.state.itemList.map((toDoList, index) => (
-            <TodoItems key={index} listProp={toDoList} />
+            <TodoItems 
+              key={index} 
+              listProp={toDoList}
+              toggleItem={this.toggleItem}
+            />
           ))}
           {/* <TodoItems /> */}
           <TodoList 
             item={this.state.item}
+            // done={this.state.done}
+            // id={this.state.id}
             handleChanges={this.handleChanges}
             updateList={this.updateList}
+            
           />
         </div>
       </div>
     );
   }
 }
+
 
 export default App;
